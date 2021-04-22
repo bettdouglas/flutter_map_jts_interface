@@ -24,7 +24,9 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_map: ^0.12.0
-  dart_jts: 
+  dart_jts:
+    git:
+      url: https://github.com/bettdouglas/dart_jts.git
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

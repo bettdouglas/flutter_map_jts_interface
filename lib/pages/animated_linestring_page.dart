@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:spatial_flutter/basemap.dart';
 import 'package:spatial_flutter/constants.dart';
-import 'package:spatial_flutter/densify_transformer.dart';
 import 'package:spatial_flutter/drawer.dart';
 import 'package:spatial_flutter/pages/app_bar.dart';
 import 'package:spatial_flutter/jts_2_fm_plotting_extensions.dart';
