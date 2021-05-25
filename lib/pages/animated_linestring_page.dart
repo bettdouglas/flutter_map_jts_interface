@@ -1,35 +1,38 @@
 import 'package:dart_jts/dart_jts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spatial_flutter/basemap.dart';
 import 'package:spatial_flutter/constants.dart';
 import 'package:spatial_flutter/drawer.dart';
 import 'package:spatial_flutter/pages/app_bar.dart';
 import 'package:spatial_flutter/jts_2_fm_plotting_extensions.dart';
 
-class LinestringAnimationPage extends StatefulWidget {
+import '../timer_stream.dart';
+
+class LinestringAnimationPage extends ConsumerWidget {
   static final String route = 'LinestringAnimationPage';
 
-  @override
-  _LinestringAnimationPageState createState() =>
-      _LinestringAnimationPageState();
-}
+//   @override
+//   _LinestringAnimationPageState createState() =>
+//       _LinestringAnimationPageState();
+// }
 
-class _LinestringAnimationPageState extends State<LinestringAnimationPage>
-    with SingleTickerProviderStateMixin {
-  AnimationController controller;
+// class _LinestringAnimationPageState extends State<LinestringAnimationPage>
+//     with SingleTickerProviderStateMixin {
+//   AnimationController controller;
+
+//   @override
+//   void initState() {
+//     controller = AnimationController(
+//       vsync: this,
+//       duration: Duration(seconds: 2),
+//     );
+//     super.initState();
+//   }
 
   @override
-  void initState() {
-    controller = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: 2),
-    );
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
     final kilifiLat = -3.639;
     final kilifiLon = 39.864;
 
@@ -75,7 +78,14 @@ class _LinestringAnimationPageState extends State<LinestringAnimationPage>
       distanceTolerance: 0.03,
     ).getResultGeometry() as LineString;
 
-    print(mombasaRatnaPoint.distance(likoniPoint));
+    // print(mombasaRatnaPoint.distance(likoniPoint));
+
+    final currentIdx = watch(timerListener).maybeWhen(
+      orElse: () => 1,
+      data: (data) => data,
+    );
+
+    print(currentIdx);
 
     return Scaffold(
       appBar: makeAppBar('Make Point'),
@@ -104,16 +114,22 @@ class _LinestringAnimationPageState extends State<LinestringAnimationPage>
             markers: densified
                 .getCoordinates()
                 .map(geometryFactory.createPoint)
+                .toList()
+                .asMap()
                 .map(
-                  (e) => e.plot(
-                    builder: (context) => Icon(
-                      Icons.sanitizer_rounded,
-                      color: Colors.green,
+                  (idx, e) => MapEntry(
+                    idx,
+                    e.plot(
+                      builder: (context) => Icon(
+                        Icons.sanitizer_rounded,
+                        color: idx == currentIdx ? Colors.red : Colors.green,
+                      ),
+                      height: 60,
+                      width: 60,
                     ),
-                    height: 60,
-                    width: 60,
                   ),
                 )
+                .values
                 .toList(),
           )
         ],

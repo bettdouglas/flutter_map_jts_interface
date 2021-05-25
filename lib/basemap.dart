@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_tappable_polyline/flutter_map_tappable_polyline.dart';
 import 'package:latlong/latlong.dart';
 
 enum BaseTile { OSM, MB_DARK, MB_LIGHT, STAMEN }
@@ -14,6 +15,7 @@ class BaseMap extends StatelessWidget {
   final FitBoundsOptions fitBoundsOptions;
   final MapController mapController;
   final Function(LatLng) onMapTapped;
+  final List<TappablePolylineLayerOptions> tappablePolylineList;
 
   const BaseMap({
     Key key,
@@ -26,6 +28,7 @@ class BaseMap extends StatelessWidget {
     this.fitBoundsOptions,
     this.mapController,
     this.onMapTapped,
+    this.tappablePolylineList,
   }) : super(key: key);
 
   @override
@@ -49,6 +52,10 @@ class BaseMap extends StatelessWidget {
       layers.addAll(markerLayerOptionsList);
     }
 
+    if (tappablePolylineList != null) {
+      layers.addAll(tappablePolylineList);
+    }
+
     return Container(
       child: FlutterMap(
         options: MapOptions(
@@ -58,6 +65,9 @@ class BaseMap extends StatelessWidget {
           bounds: bounds,
           boundsOptions:
               fitBoundsOptions ?? FitBoundsOptions(padding: EdgeInsets.all(20)),
+          plugins: [
+            TappablePolylineMapPlugin(),
+          ],
           onTap: (point) {
             print(point);
           },
