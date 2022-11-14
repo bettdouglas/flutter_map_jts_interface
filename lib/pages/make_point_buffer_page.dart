@@ -6,12 +6,14 @@ import 'package:spatial_flutter/constants.dart';
 import 'package:spatial_flutter/jts_2_fm_plotting_extensions.dart';
 
 class MakePointBufferPage extends StatelessWidget {
-  static final String route = 'MakePointBufferPage';
+  static const String route = 'MakePointBufferPage';
+
+  const MakePointBufferPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final kilifiLat = -3.634074;
-    final kilifiLon = 39.866103;
+    const kilifiLat = -3.634074;
+    const kilifiLon = 39.866103;
 
     final kilifiPoint = geometryFactory.createPoint(
       Coordinate(kilifiLon, kilifiLat),
@@ -26,7 +28,7 @@ class MakePointBufferPage extends StatelessWidget {
         MarkerLayerOptions(
           markers: [
             kilifiPoint.plot(
-              builder: (context) => Icon(
+              builder: (context) => const Icon(
                 Icons.beach_access,
                 size: 60,
               ),

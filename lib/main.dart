@@ -8,10 +8,12 @@ import 'package:spatial_flutter/pages/make_point_buffer_page.dart';
 import 'package:spatial_flutter/pages/make_point_page.dart';
 
 void main() {
-  runApp(ProviderScope(child: MyApp()));
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -19,7 +21,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   var _currentIndex = 0;
 
-  final pages = [
+  final pages = const [
     MakePointPage(),
     MakePointBufferPage(),
     MakeLinestringPage(),
@@ -34,11 +36,11 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData.dark(),
       home: BackdropScaffold(
         appBar: BackdropAppBar(
-          title: Text('Dart JTS Examples'),
+          title: const Text('Dart JTS Examples'),
         ),
         stickyFrontLayer: true,
         backLayer: BackdropNavigationBackLayer(
-          items: [
+          items: const [
             ListTile(
               title: Text('Points'),
               subtitle: Text('Plot points in dart jts'),

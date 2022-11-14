@@ -3,8 +3,6 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_tappable_polyline/flutter_map_tappable_polyline.dart';
 import 'package:latlong2/latlong.dart';
 
-enum BaseTile { OSM, MB_DARK, MB_LIGHT, STAMEN }
-
 class BaseMap extends StatelessWidget {
   final LatLng center;
   final double zoom;
@@ -56,24 +54,22 @@ class BaseMap extends StatelessWidget {
       layers.addAll(tappablePolylineList!);
     }
 
-    return Container(
-      child: FlutterMap(
-        options: MapOptions(
-          center: center,
-          controller: mapController,
-          zoom: zoom,
-          bounds: bounds,
-          boundsOptions:
-              fitBoundsOptions ?? FitBoundsOptions(padding: EdgeInsets.all(20)),
-          plugins: [
-            TappablePolylineMapPlugin(),
-          ],
-          onTap: (tapPosition, point) {
-            print(point);
-          },
-        ),
-        layers: layers,
+    return FlutterMap(
+      options: MapOptions(
+        center: center,
+        controller: mapController,
+        zoom: zoom,
+        bounds: bounds,
+        boundsOptions: fitBoundsOptions ??
+            const FitBoundsOptions(padding: EdgeInsets.all(20)),
+        plugins: [
+          TappablePolylineMapPlugin(),
+        ],
+        onTap: (tapPosition, point) {
+          print(point);
+        },
       ),
+      layers: layers,
     );
   }
 }

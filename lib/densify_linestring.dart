@@ -140,7 +140,7 @@ class Densifier {
       }
     }
     // this check handles empty sequences
-    if (pts.length > 0) {
+    if (pts.isNotEmpty) {
       coordinateList.addCoord(pts[pts.length - 1], false);
     }
     return coordinateList.toCoordinateArray();

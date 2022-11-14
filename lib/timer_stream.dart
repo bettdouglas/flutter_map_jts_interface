@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final fireMilliSeconds = 1;
+const fireMilliSeconds = 1;
 
 final timer = Stream.periodic(
-  Duration(milliseconds: fireMilliSeconds),
+  const Duration(milliseconds: fireMilliSeconds),
   (idx) => idx % 3,
 );
 

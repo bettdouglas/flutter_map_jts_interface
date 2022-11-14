@@ -10,24 +10,26 @@ import 'package:spatial_flutter/jts_2_fm_plotting_extensions.dart';
 import '../timer_stream.dart';
 
 class LinestringAnimationPage extends ConsumerWidget {
-  static final String route = 'LinestringAnimationPage';
+  static const String route = 'LinestringAnimationPage';
+
+  const LinestringAnimationPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final kilifiLat = -3.639;
-    final kilifiLon = 39.864;
+    const kilifiLat = -3.639;
+    const kilifiLon = 39.864;
 
-    final nyaliLat = -4.020;
-    final nyaliLon = 39.7192;
+    const nyaliLat = -4.020;
+    const nyaliLon = 39.7192;
 
-    final mombasaCourtLat = -4.044;
-    final mombasaCourtLon = 39.6575;
+    const mombasaCourtLat = -4.044;
+    const mombasaCourtLon = 39.6575;
 
-    final mombasaRatnaLat = -4.0465;
-    final mombasaRatnaLon = 39.6847;
+    const mombasaRatnaLat = -4.0465;
+    const mombasaRatnaLon = 39.6847;
 
-    final likoniLat = -4.0748;
-    final likoniLon = 39.6660;
+    const likoniLat = -4.0748;
+    const likoniLon = 39.6660;
 
     final kilifiPoint = Coordinate(kilifiLon, kilifiLat);
 
@@ -73,14 +75,14 @@ class LinestringAnimationPage extends ConsumerWidget {
     return BaseMap(
       center: kilifiPoint.toLatLng(),
       bounds: bounds,
-      fitBoundsOptions: FitBoundsOptions(padding: EdgeInsets.all(100)),
+      fitBoundsOptions: const FitBoundsOptions(padding: EdgeInsets.all(100)),
       zoom: 12,
       markerLayerOptionsList: [
         MarkerLayerOptions(
           markers: pointGeometries
               .map(
                 (e) => e.plot(
-                  builder: (context) => Icon(
+                  builder: (context) => const Icon(
                     Icons.local_shipping,
                     color: Colors.black,
                   ),
