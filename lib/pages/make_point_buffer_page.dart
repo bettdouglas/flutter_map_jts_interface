@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart' hide Polygon;
 import 'package:spatial_flutter/basemap.dart';
 import 'package:spatial_flutter/constants.dart';
-import 'package:spatial_flutter/drawer.dart';
-import 'package:spatial_flutter/pages/app_bar.dart';
 import 'package:spatial_flutter/jts_2_fm_plotting_extensions.dart';
 
 class MakePointBufferPage extends StatelessWidget {
@@ -21,38 +19,34 @@ class MakePointBufferPage extends StatelessWidget {
 
     final kilifiBuffer = kilifiPoint.buffer(0.002) as Polygon;
 
-    return Scaffold(
-      appBar: makeAppBar('Make Point'),
-      drawer: buildDrawer(context, route),
-      body: BaseMap(
-        center: kilifiPoint.toLatLng(),
-        bounds: kilifiBuffer.latLngBounds(),
-        markerLayerOptionsList: [
-          MarkerLayerOptions(
-            markers: [
-              kilifiPoint.plot(
-                builder: (context) => Icon(
-                  Icons.beach_access,
-                  size: 60,
-                ),
-                height: 60,
-                width: 60,
-              )
-            ],
-          )
-        ],
-        polygonLayerOptionsList: [
-          PolygonLayerOptions(
-            polygons: [
-              kilifiBuffer.plot(
-                borderColor: Colors.red,
-                borderStrokeWidth: 1.5,
-                color: Colors.green.withOpacity(0.1),
+    return BaseMap(
+      center: kilifiPoint.toLatLng(),
+      bounds: kilifiBuffer.latLngBounds(),
+      markerLayerOptionsList: [
+        MarkerLayerOptions(
+          markers: [
+            kilifiPoint.plot(
+              builder: (context) => Icon(
+                Icons.beach_access,
+                size: 60,
               ),
-            ],
-          )
-        ],
-      ),
+              height: 60,
+              width: 60,
+            )
+          ],
+        )
+      ],
+      polygonLayerOptionsList: [
+        PolygonLayerOptions(
+          polygons: [
+            kilifiBuffer.plot(
+              borderColor: Colors.red,
+              borderStrokeWidth: 1.5,
+              color: Colors.green.withOpacity(0.1),
+            ),
+          ],
+        )
+      ],
     );
   }
 }

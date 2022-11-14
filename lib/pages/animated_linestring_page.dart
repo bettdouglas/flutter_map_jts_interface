@@ -4,8 +4,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spatial_flutter/basemap.dart';
 import 'package:spatial_flutter/constants.dart';
-import 'package:spatial_flutter/drawer.dart';
-import 'package:spatial_flutter/pages/app_bar.dart';
+import 'package:spatial_flutter/densify_linestring.dart';
 import 'package:spatial_flutter/jts_2_fm_plotting_extensions.dart';
 
 import '../timer_stream.dart';
@@ -13,26 +12,8 @@ import '../timer_stream.dart';
 class LinestringAnimationPage extends ConsumerWidget {
   static final String route = 'LinestringAnimationPage';
 
-//   @override
-//   _LinestringAnimationPageState createState() =>
-//       _LinestringAnimationPageState();
-// }
-
-// class _LinestringAnimationPageState extends State<LinestringAnimationPage>
-//     with SingleTickerProviderStateMixin {
-//   AnimationController controller;
-
-//   @override
-//   void initState() {
-//     controller = AnimationController(
-//       vsync: this,
-//       duration: Duration(seconds: 2),
-//     );
-//     super.initState();
-//   }
-
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final kilifiLat = -3.639;
     final kilifiLon = 39.864;
 
@@ -76,84 +57,82 @@ class LinestringAnimationPage extends ConsumerWidget {
     final densified = Densifier(
       lineString,
       distanceTolerance: 0.03,
-    ).getResultGeometry() as LineString;
+    ).densify() as LineString;
+
+    print(densified.getCoordinates().length);
 
     // print(mombasaRatnaPoint.distance(likoniPoint));
 
-    final currentIdx = watch(timerListener).maybeWhen(
-      orElse: () => 1,
-      data: (data) => data,
-    );
+    final currentIdx = ref.watch(timerListener).maybeWhen(
+          orElse: () => 1,
+          data: (data) => data,
+        );
 
-    print(currentIdx);
+    // print(currentIdx);
 
-    return Scaffold(
-      appBar: makeAppBar('Make Point'),
-      drawer: buildDrawer(context, LinestringAnimationPage.route),
-      body: BaseMap(
-        center: kilifiPoint.toLatLng(),
-        bounds: bounds,
-        fitBoundsOptions: FitBoundsOptions(padding: EdgeInsets.all(100)),
-        zoom: 12,
-        markerLayerOptionsList: [
-          MarkerLayerOptions(
-            markers: pointGeometries
-                .map(
-                  (e) => e.plot(
+    return BaseMap(
+      center: kilifiPoint.toLatLng(),
+      bounds: bounds,
+      fitBoundsOptions: FitBoundsOptions(padding: EdgeInsets.all(100)),
+      zoom: 12,
+      markerLayerOptionsList: [
+        MarkerLayerOptions(
+          markers: pointGeometries
+              .map(
+                (e) => e.plot(
+                  builder: (context) => Icon(
+                    Icons.local_shipping,
+                    color: Colors.black,
+                  ),
+                  height: 60,
+                  width: 60,
+                ),
+              )
+              .toList(),
+        ),
+        MarkerLayerOptions(
+          markers: densified
+              .getCoordinates()
+              .map(geometryFactory.createPoint)
+              .toList()
+              .asMap()
+              .map(
+                (idx, e) => MapEntry(
+                  idx,
+                  e.plot(
                     builder: (context) => Icon(
-                      Icons.local_shipping,
-                      color: Colors.black,
+                      Icons.sanitizer_rounded,
+                      color: idx == currentIdx ? Colors.red : Colors.green,
                     ),
                     height: 60,
                     width: 60,
                   ),
-                )
-                .toList(),
-          ),
-          MarkerLayerOptions(
-            markers: densified
-                .getCoordinates()
-                .map(geometryFactory.createPoint)
-                .toList()
-                .asMap()
-                .map(
-                  (idx, e) => MapEntry(
-                    idx,
-                    e.plot(
-                      builder: (context) => Icon(
-                        Icons.sanitizer_rounded,
-                        color: idx == currentIdx ? Colors.red : Colors.green,
-                      ),
-                      height: 60,
-                      width: 60,
-                    ),
-                  ),
-                )
-                .values
-                .toList(),
-          )
-        ],
-        polylineLayerOptionsList: [
-          PolylineLayerOptions(
-            polylines: [
-              lineString.plot(
-                borderColor: Colors.transparent,
-                borderStrokeWidth: 1,
-                strokeWidth: 2,
-                color: Colors.black,
-                isDotted: false,
-              ),
-              densified.plot(
-                borderColor: Colors.transparent,
-                borderStrokeWidth: 1,
-                strokeWidth: 2,
-                color: Colors.red,
-                isDotted: true,
-              ),
-            ],
-          )
-        ],
-      ),
+                ),
+              )
+              .values
+              .toList(),
+        )
+      ],
+      polylineLayerOptionsList: [
+        PolylineLayerOptions(
+          polylines: [
+            lineString.plot(
+              borderColor: Colors.transparent,
+              borderStrokeWidth: 1,
+              strokeWidth: 2,
+              color: Colors.black,
+              isDotted: false,
+            ),
+            densified.plot(
+              borderColor: Colors.transparent,
+              borderStrokeWidth: 1,
+              strokeWidth: 2,
+              color: Colors.red,
+              isDotted: true,
+            ),
+          ],
+        )
+      ],
     );
   }
 }

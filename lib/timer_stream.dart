@@ -6,7 +6,7 @@ final fireMilliSeconds = 1;
 
 final timer = Stream.periodic(
   Duration(milliseconds: fireMilliSeconds),
-  makeRepeatingId,
+  (idx) => idx % 3,
 );
 
 int makeRepeatingId(int current) {
@@ -15,6 +15,6 @@ int makeRepeatingId(int current) {
   return ans;
 }
 
-var count = 0;
+var count = 1;
 
 final timerListener = StreamProvider((ref) => timer);

@@ -4,10 +4,8 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_tappable_polyline/flutter_map_tappable_polyline.dart';
 import 'package:spatial_flutter/basemap.dart';
 import 'package:spatial_flutter/constants.dart';
-import 'package:spatial_flutter/drawer.dart';
-import 'package:spatial_flutter/pages/app_bar.dart';
 import 'package:spatial_flutter/jts_2_fm_plotting_extensions.dart';
-import 'package:latlong/latlong.dart';
+import 'package:latlong2/latlong.dart';
 
 class MakeLinestringPage extends StatelessWidget {
   static final String route = 'MakeLinestringPage';
@@ -54,73 +52,71 @@ class MakeLinestringPage extends StatelessWidget {
 
     final bounds = lineString.latLngBounds();
 
-    return Scaffold(
-      appBar: makeAppBar('Make Point'),
-      drawer: buildDrawer(context, route),
-      body: BaseMap(
-        center: kilifiPoint.toLatLng(),
-        bounds: bounds,
-        fitBoundsOptions: FitBoundsOptions(padding: EdgeInsets.all(100)),
-        zoom: 12,
-        onMapTapped: null,
-        markerLayerOptionsList: [
-          MarkerLayerOptions(
-            markers: pointGeometries
-                .map(
-                  (e) => e.plot(
-                    builder: (context) => Icon(
-                      Icons.local_shipping,
-                      color: Colors.black,
-                    ),
-                    height: 60,
-                    width: 60,
+    return BaseMap(
+      center: kilifiPoint.toLatLng(),
+      bounds: bounds,
+      fitBoundsOptions: FitBoundsOptions(padding: EdgeInsets.all(100)),
+      zoom: 12,
+      onTap: null,
+      markerLayerOptionsList: [
+        MarkerLayerOptions(
+          markers: pointGeometries
+              .map(
+                (e) => e.plot(
+                  builder: (context) => Icon(
+                    Icons.local_shipping,
+                    color: Colors.black,
                   ),
-                )
-                .toList(),
-          )
-        ],
-        polylineLayerOptionsList: [
-          // PolylineLayerOptions(
-          //   polylines: [
-          //     lineString.plot(
-          //       borderColor: Colors.transparent,
-          //       borderStrokeWidth: 1,
-          //       strokeWidth: 2,
-          //       color: Colors.black,
-          //       isDotted: false,
-          //     ),
-          //   ],
-          // )
-        ],
-        tappablePolylineList: [
-          TappablePolylineLayerOptions(
-            onTap: (TaggedPolyline polyline) => print(polyline.tag),
-            onMiss: () => print('No polyline tapped'),
-            pointerDistanceTolerance: 20,
-            polylineCulling: true,
-            polylines: [
-              TaggedPolyline(
-                points: lineString
-                    .plot(
-                      borderColor: Colors.transparent,
-                      borderStrokeWidth: 1,
-                      strokeWidth: 2,
-                      color: Colors.black,
-                      isDotted: false,
-                    )
-                    .points,
-                tag: 'Kilifi Road',
-              ),
-              TaggedPolyline(
-                tag: 'Village Road',
-                points: line2Coordinates,
-                color: Colors.black,
-                strokeWidth: 10,
+                  height: 60,
+                  width: 60,
+                ),
               )
-            ],
-          )
-        ],
-      ),
+              .toList(),
+        )
+      ],
+      polylineLayerOptionsList: [
+        // PolylineLayerOptions(
+        //   polylines: [
+        //     lineString.plot(
+        //       borderColor: Colors.transparent,
+        //       borderStrokeWidth: 1,
+        //       strokeWidth: 2,
+        //       color: Colors.black,
+        //       isDotted: false,
+        //     ),
+        //   ],
+        // )
+      ],
+      tappablePolylineList: [
+        TappablePolylineLayerOptions(
+          onTap: (taggedPolylines, tapUpDetails) => print(
+            taggedPolylines.first,
+          ),
+          onMiss: (tapUpDetails) => print('No polyline tapped'),
+          pointerDistanceTolerance: 20,
+          polylineCulling: true,
+          polylines: [
+            TaggedPolyline(
+              points: lineString
+                  .plot(
+                    borderColor: Colors.transparent,
+                    borderStrokeWidth: 1,
+                    strokeWidth: 2,
+                    color: Colors.black,
+                    isDotted: false,
+                  )
+                  .points,
+              tag: 'Kilifi Road',
+            ),
+            TaggedPolyline(
+              tag: 'Village Road',
+              points: line2Coordinates,
+              color: Colors.black,
+              strokeWidth: 10.5,
+            )
+          ],
+        )
+      ],
     );
   }
 }

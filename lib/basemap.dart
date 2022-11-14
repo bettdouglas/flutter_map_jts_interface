@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_tappable_polyline/flutter_map_tappable_polyline.dart';
-import 'package:latlong/latlong.dart';
+import 'package:latlong2/latlong.dart';
 
 enum BaseTile { OSM, MB_DARK, MB_LIGHT, STAMEN }
 
 class BaseMap extends StatelessWidget {
   final LatLng center;
   final double zoom;
-  final List<MarkerLayerOptions> markerLayerOptionsList;
-  final List<PolygonLayerOptions> polygonLayerOptionsList;
-  final List<PolylineLayerOptions> polylineLayerOptionsList;
-  final LatLngBounds bounds;
-  final FitBoundsOptions fitBoundsOptions;
-  final MapController mapController;
-  final Function(LatLng) onMapTapped;
-  final List<TappablePolylineLayerOptions> tappablePolylineList;
+  final List<MarkerLayerOptions>? markerLayerOptionsList;
+  final List<PolygonLayerOptions>? polygonLayerOptionsList;
+  final List<PolylineLayerOptions>? polylineLayerOptionsList;
+  final LatLngBounds? bounds;
+  final FitBoundsOptions? fitBoundsOptions;
+  final MapController? mapController;
+  final Function(LatLng)? onTap;
+  final List<TappablePolylineLayerOptions>? tappablePolylineList;
 
   const BaseMap({
-    Key key,
-    @required this.center,
+    Key? key,
+    required this.center,
     this.markerLayerOptionsList,
     this.polygonLayerOptionsList,
     this.polylineLayerOptionsList,
@@ -27,7 +27,7 @@ class BaseMap extends StatelessWidget {
     this.bounds,
     this.fitBoundsOptions,
     this.mapController,
-    this.onMapTapped,
+    this.onTap,
     this.tappablePolylineList,
   }) : super(key: key);
 
@@ -41,19 +41,19 @@ class BaseMap extends StatelessWidget {
     ];
 
     if (polygonLayerOptionsList != null) {
-      layers.addAll(polygonLayerOptionsList);
+      layers.addAll(polygonLayerOptionsList!);
     }
 
     if (polylineLayerOptionsList != null) {
-      layers.addAll(polylineLayerOptionsList);
+      layers.addAll(polylineLayerOptionsList!);
     }
 
     if (markerLayerOptionsList != null) {
-      layers.addAll(markerLayerOptionsList);
+      layers.addAll(markerLayerOptionsList!);
     }
 
     if (tappablePolylineList != null) {
-      layers.addAll(tappablePolylineList);
+      layers.addAll(tappablePolylineList!);
     }
 
     return Container(
@@ -68,7 +68,7 @@ class BaseMap extends StatelessWidget {
           plugins: [
             TappablePolylineMapPlugin(),
           ],
-          onTap: (point) {
+          onTap: (tapPosition, point) {
             print(point);
           },
         ),

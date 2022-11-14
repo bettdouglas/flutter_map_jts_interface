@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart' hide Polygon;
 import 'package:spatial_flutter/basemap.dart';
 import 'package:spatial_flutter/constants.dart';
-import 'package:spatial_flutter/drawer.dart';
-import 'package:spatial_flutter/pages/app_bar.dart';
 import 'package:spatial_flutter/jts_2_fm_plotting_extensions.dart';
 
 class MakeLinestringBufferPage extends StatelessWidget {
@@ -54,53 +52,49 @@ class MakeLinestringBufferPage extends StatelessWidget {
 
     final bounds = lineStringBuffer.latLngBounds();
 
-    return Scaffold(
-      appBar: makeAppBar('Make Point'),
-      drawer: buildDrawer(context, route),
-      body: BaseMap(
-        center: kilifiPoint.toLatLng(),
-        bounds: bounds,
-        fitBoundsOptions: FitBoundsOptions(padding: EdgeInsets.all(100)),
-        markerLayerOptionsList: [
-          MarkerLayerOptions(
-            markers: pointGeometries
-                .map(
-                  (e) => e.plot(
-                    builder: (context) => Icon(
-                      Icons.local_shipping,
-                      color: Colors.black,
-                    ),
-                    height: 60,
-                    width: 60,
+    return BaseMap(
+      center: kilifiPoint.toLatLng(),
+      bounds: bounds,
+      fitBoundsOptions: FitBoundsOptions(padding: EdgeInsets.all(100)),
+      markerLayerOptionsList: [
+        MarkerLayerOptions(
+          markers: pointGeometries
+              .map(
+                (e) => e.plot(
+                  builder: (context) => Icon(
+                    Icons.local_shipping,
+                    color: Colors.black,
                   ),
-                )
-                .toList(),
-          )
-        ],
-        polylineLayerOptionsList: [
-          PolylineLayerOptions(
-            polylines: [
-              lineString.plot(
-                borderColor: Colors.transparent,
-                borderStrokeWidth: 1,
-                strokeWidth: 2,
-                color: Colors.red,
-                isDotted: false,
-              ),
-            ],
-          )
-        ],
-        polygonLayerOptionsList: [
-          PolygonLayerOptions(
-            polygons: [
-              lineStringBuffer.plot(
-                color: Colors.lightGreen,
-                borderColor: Colors.black,
+                  height: 60,
+                  width: 60,
+                ),
               )
-            ],
-          )
-        ],
-      ),
+              .toList(),
+        )
+      ],
+      polylineLayerOptionsList: [
+        PolylineLayerOptions(
+          polylines: [
+            lineString.plot(
+              borderColor: Colors.transparent,
+              borderStrokeWidth: 1,
+              strokeWidth: 4,
+              color: Colors.red,
+              isDotted: false,
+            ),
+          ],
+        )
+      ],
+      polygonLayerOptionsList: [
+        PolygonLayerOptions(
+          polygons: [
+            lineStringBuffer.plot(
+              color: Colors.lightGreen,
+              borderColor: Colors.black,
+            )
+          ],
+        )
+      ],
     );
   }
 }
